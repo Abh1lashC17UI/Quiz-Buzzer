@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trivia Night — Choose Format</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body class="format-page">
+  <div class="format-card">
+    <h1 class="app-title">🎉 Trivia Night</h1>
+    <p class="format-subtitle">Choose your game format to get started.</p>
+
+    <div class="format-list">
+      <!-- Jeopardy -->
+      <a href="/join" class="format-btn format-active" id="fmt-jeopardy">
+        <span class="format-icon">🔔</span>
+        <div>
+          <span class="format-name">Jeopardy</span>
+          <span class="format-desc">Classic first-to-buzz game</span>
+        </div>
+      </a>
+
+      <!-- Countdown Quiz -->
+      <a href="/join" class="format-btn format-active" id="fmt-countdown">
+        <span class="format-icon">⏱️</span>
+        <div>
+          <span class="format-name">Countdown Quiz</span>
+          <span class="format-desc">Timed questions with answer timeline</span>
+        </div>
+      </a>
+
+      <!-- Format 3 Placeholder -->
+      <button type="button" class="format-btn format-placeholder" onclick="showPlaceholder('Format 3')">
+        <span class="format-icon">🎲</span>
+        <div>
+          <span class="format-name">Format 3</span>
+          <span class="format-desc">Coming soon</span>
+        </div>
+      </button>
+    </div>
+  </div>
+
+  <!-- Placeholder modal -->
+  <div id="placeholder-overlay" class="placeholder-overlay hidden" role="dialog" aria-modal="true">
+    <div class="placeholder-modal">
+      <div class="placeholder-icon">🚧</div>
+      <h2 id="placeholder-title">Format 3</h2>
+      <p class="placeholder-msg">Coming soon.</p>
+      <button class="primary-btn" onclick="hidePlaceholder()">← Back</button>
+    </div>
+  </div>
+
+  <script>
+    function showPlaceholder(name) {
+      document.getElementById('placeholder-title').textContent = name;
+      document.getElementById('placeholder-overlay').classList.remove('hidden');
+    }
+    function hidePlaceholder() {
+      document.getElementById('placeholder-overlay').classList.add('hidden');
+    }
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') hidePlaceholder();
+    });
+  </script>
+</body>
+</html>

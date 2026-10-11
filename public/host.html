@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trivia Night — Host</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body class="host-page">
+
+  <!-- ── Connection banner ─────────────────────────────────── -->
+  <div id="conn-banner" class="conn-banner disconnected">
+    <span id="conn-text">Connecting…</span>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       VIEW 1: CHOOSE QUIZ TYPE (shown on initial launch)
+       ══════════════════════════════════════════════════════════ -->
+  <div id="view-select-format" class="host-select-layout hidden">
+    <div class="host-select-card">
+      <h1 class="host-select-title">🎉 Trivia Night</h1>
+      <p class="host-select-subtitle">Choose Quiz Type</p>
+
+      <div class="host-select-list">
+        <button type="button" class="format-btn format-active" id="btn-select-jeopardy">
+          <span class="format-icon">🔔</span>
+          <div>
+            <span class="format-name">JEOPARDY</span>
+            <span class="format-desc">Classic buzzer game — first to buzz wins</span>
+          </div>
+        </button>
+
+        <button type="button" class="format-btn format-active" id="btn-select-countdown">
+          <span class="format-icon">⏱️</span>
+          <div>
+            <span class="format-name">COUNTDOWN QUIZ</span>
+            <span class="format-desc">Timed questions with answer timeline — all teams answer</span>
+          </div>
+        </button>
+
+        <button type="button" class="format-btn format-placeholder" id="btn-select-format3">
+          <span class="format-icon">🎲</span>
+          <div>
+            <span class="format-name">FORMAT 3</span>
+            <span class="format-desc">Coming soon</span>
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       VIEW 2: JEOPARDY HOST DASHBOARD
+       (Clean, original Jeopardy buzzer with NO timer/timeline)
+       ══════════════════════════════════════════════════════════ -->
+  <div id="view-host-jeopardy" class="host-layout hidden">
+    <!-- Left: Control panel -->
+    <aside class="host-sidebar">
+      <h1 class="app-title">🎉 Trivia Night</h1>
+      <p class="host-label">JEOPARDY HOST PANEL</p>
+
+      <div class="game-code-box">
+        <div class="game-code-label">GAME CODE</div>
+        <div id="j-game-code" class="game-code-value">——————</div>
+        <div class="game-code-hint">Players open server URL and enter code</div>
+      </div>
+
+      <div class="state-box" style="text-align:center;">
+        <div class="state-label">FORMAT</div>
+        <div class="state-value" style="font-size:1.2rem;color:var(--accent);">JEOPARDY</div>
+      </div>
+
+      <div class="question-control">
+        <div class="state-label">QUESTION</div>
+        <div class="question-stepper">
+          <button id="j-btn-q-minus" class="step-btn" disabled>−</button>
+          <span id="j-question-display" class="question-number">1</span>
+          <button id="j-btn-q-plus" class="step-btn" disabled>+</button>
+        </div>
+      </div>
+
+      <div class="state-box">
+        <div class="state-label">CURRENT STATE</div>
+        <div id="j-state-display" class="state-value state-locked">LOCKED</div>
+      </div>
+
+      <div id="j-winner-box" class="winner-box hidden">
+        <div id="j-winnerText" class="winner-text"></div>
+      </div>
+
+      <div class="host-buttons">
+        <button id="j-btn-arm" class="host-btn arm-btn" disabled>ARM</button>
+        <button id="j-btn-reset" class="host-btn reset-btn" disabled>RESET</button>
+        <button id="j-btn-audience" class="host-btn audience-btn" disabled>OPEN AUDIENCE DISPLAY</button>
+        <button id="j-btn-copy-audience" class="host-btn copy-btn" disabled>COPY AUDIENCE LINK</button>
+      </div>
+    </aside>
+
+    <!-- Right: Team status & Event log -->
+    <main class="host-main">
+      <h2 class="section-title">Team Status</h2>
+      <div class="team-status-list">
+        <div class="team-status-row" id="j-team-row-1">
+          <div class="team-name">Team 1</div>
+          <div class="team-conn-indicator">
+            <span class="dot disconnected-dot" id="j-dot-1"></span>
+            <span class="conn-label" id="j-label-1">DISCONNECTED</span>
+          </div>
+          <button class="kick-btn" data-team="1" disabled>Kick</button>
+        </div>
+        <div class="team-status-row" id="j-team-row-2">
+          <div class="team-name">Team 2</div>
+          <div class="team-conn-indicator">
+            <span class="dot disconnected-dot" id="j-dot-2"></span>
+            <span class="conn-label" id="j-label-2">DISCONNECTED</span>
+          </div>
+          <button class="kick-btn" data-team="2" disabled>Kick</button>
+        </div>
+        <div class="team-status-row" id="j-team-row-3">
+          <div class="team-name">Team 3</div>
+          <div class="team-conn-indicator">
+            <span class="dot disconnected-dot" id="j-dot-3"></span>
+            <span class="conn-label" id="j-label-3">DISCONNECTED</span>
+          </div>
+          <button class="kick-btn" data-team="3" disabled>Kick</button>
+        </div>
+      </div>
+
+      <h2 class="section-title" style="margin-top:2rem;">Event Log</h2>
+      <div id="j-event-log" class="event-log"></div>
+    </main>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       VIEW 3: COUNTDOWN QUIZ HOST DASHBOARD
+       (Dedicated countdown timer and answer timeline)
+       ══════════════════════════════════════════════════════════ -->
+  <div id="view-host-countdown" class="host-layout hidden">
+    <!-- Left: Control panel -->
+    <aside class="host-sidebar">
+      <h1 class="app-title">🎉 Trivia Night</h1>
+      <p class="host-label">COUNTDOWN QUIZ HOST PANEL</p>
+
+      <div class="game-code-box">
+        <div class="game-code-label">GAME CODE</div>
+        <div id="c-game-code" class="game-code-value">——————</div>
+        <div class="game-code-hint">Players open server URL and enter code</div>
+      </div>
+
+      <div class="state-box" style="text-align:center;">
+        <div class="state-label">FORMAT</div>
+        <div class="state-value" style="font-size:1.2rem;color:var(--accent);">COUNTDOWN QUIZ</div>
+      </div>
+
+      <div class="question-control">
+        <div class="state-label">QUESTION</div>
+        <div class="question-stepper">
+          <button id="c-btn-q-minus" class="step-btn" disabled>−</button>
+          <span id="c-question-display" class="question-number">1</span>
+          <button id="c-btn-q-plus" class="step-btn" disabled>+</button>
+        </div>
+      </div>
+
+      <!-- Time Limit Controls -->
+      <div class="timer-control">
+        <div class="state-label">TIME LIMIT</div>
+        <div class="duration-presets" id="c-duration-presets">
+          <button class="duration-pill" data-ms="10000">10s</button>
+          <button class="duration-pill" data-ms="15000">15s</button>
+          <button class="duration-pill" data-ms="20000">20s</button>
+          <button class="duration-pill active" data-ms="30000">30s</button>
+          <button class="duration-pill" data-ms="45000">45s</button>
+          <button class="duration-pill" data-ms="60000">60s</button>
+          <button class="duration-pill" data-ms="90000">90s</button>
+          <button class="duration-pill" data-ms="120000">120s</button>
+        </div>
+
+        <div class="host-timer-display">
+          <div id="c-timer-number" class="host-timer-number">30</div>
+        </div>
+        <div class="timer-progress-wrap">
+          <div id="c-timer-fill" class="timer-progress-fill"></div>
+        </div>
+        <div id="c-timer-state" class="audience-timer-state" style="margin-top:0.3rem;font-size:0.75rem;">IDLE</div>
+      </div>
+
+      <div class="host-buttons">
+        <button id="c-btn-start" class="host-btn start-timer-btn" disabled>▶ START QUESTION</button>
+        <button id="c-btn-reset" class="host-btn reset-btn" disabled>RESET QUESTION</button>
+        <button id="c-btn-audience" class="host-btn audience-btn" disabled>OPEN AUDIENCE DISPLAY</button>
+        <button id="c-btn-copy-audience" class="host-btn copy-btn" disabled>COPY AUDIENCE LINK</button>
+      </div>
+    </aside>
+
+    <!-- Right: Team status & Answer Timeline -->
+    <main class="host-main">
+      <h2 class="section-title">Team Status</h2>
+      <div class="team-status-list">
+        <div class="team-status-row" id="c-team-row-1">
+          <div class="team-name">Team 1</div>
+          <div class="team-conn-indicator">
+            <span class="dot disconnected-dot" id="c-dot-1"></span>
+            <span class="conn-label" id="c-label-1">DISCONNECTED</span>
+          </div>
+          <div class="conn-label" id="c-answered-1" style="font-size:0.75rem;margin-right:0.5rem;">—</div>
+          <button class="kick-btn" data-team="1" disabled>Kick</button>
+        </div>
+        <div class="team-status-row" id="c-team-row-2">
+          <div class="team-name">Team 2</div>
+          <div class="team-conn-indicator">
+            <span class="dot disconnected-dot" id="c-dot-2"></span>
+            <span class="conn-label" id="c-label-2">DISCONNECTED</span>
+          </div>
+          <div class="conn-label" id="c-answered-2" style="font-size:0.75rem;margin-right:0.5rem;">—</div>
+          <button class="kick-btn" data-team="2" disabled>Kick</button>
+        </div>
+        <div class="team-status-row" id="c-team-row-3">
+          <div class="team-name">Team 3</div>
+          <div class="team-conn-indicator">
+            <span class="dot disconnected-dot" id="c-dot-3"></span>
+            <span class="conn-label" id="c-label-3">DISCONNECTED</span>
+          </div>
+          <div class="conn-label" id="c-answered-3" style="font-size:0.75rem;margin-right:0.5rem;">—</div>
+          <button class="kick-btn" data-team="3" disabled>Kick</button>
+        </div>
+      </div>
+
+      <!-- Answer Timeline Section -->
+      <div class="host-timeline-section">
+        <h2 class="section-title">Answer Timeline</h2>
+        <div class="timeline-section">
+          <div class="timeline-outer">
+            <div class="timeline-events-area" id="c-timeline-events"></div>
+            <div class="timeline-rail">
+              <div class="timeline-rail-played" id="c-rail-played" style="width:0%"></div>
+            </div>
+            <div class="timeline-ticks">
+              <span id="c-tick-start">30s</span>
+              <span>0s</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="section-title" style="margin-top:2rem;">Event Log</h2>
+      <div id="c-event-log" class="event-log"></div>
+    </main>
+  </div>
+
+  <!-- ── Placeholder Modal (Format 3) ───────────────────────── -->
+  <div id="placeholder-overlay" class="placeholder-overlay hidden" role="dialog" aria-modal="true">
+    <div class="placeholder-modal">
+      <div class="placeholder-icon">🚧</div>
+      <h2>Format 3</h2>
+      <p class="placeholder-msg">Coming soon.</p>
+      <button class="primary-btn" id="btn-close-placeholder">← Back</button>
+    </div>
+  </div>
+
+  <script src="/js/host.js"></script>
+</body>
+</html>

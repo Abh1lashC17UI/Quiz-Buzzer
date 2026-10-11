@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trivia Night — Embed</title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <!--
+    This page is designed to be placed inside an iframe on a quiz-hosting website:
+      <iframe src="http://HOST-IP:PORT/embed/DISPLAY-TOKEN"></iframe>
+    It is identical in content to the audience display but served without
+    X-Frame-Options so it can be embedded.
+    It contains NO host credentials, NO control buttons.
+  -->
+</head>
+<body class="audience-page embed-page">
+
+  <div id="conn-dot" class="audience-conn-dot disconnected-dot" title="Connection status"></div>
+
+  <div class="audience-layout">
+    <div class="audience-title">🎉 Trivia Night</div>
+    <div id="audience-format"   class="audience-format">JEOPARDY</div>
+    <div id="audience-question" class="audience-question">QUESTION 1</div>
+
+    <!-- ── Timer section ───────────────────────────────────── -->
+    <div class="audience-timer-section" id="audience-timer-section">
+      <div id="audience-timer-number" class="audience-timer-number">–</div>
+      <div class="audience-timer-bar-wrap">
+        <div id="audience-timer-fill" class="audience-timer-bar-fill"></div>
+      </div>
+      <div id="audience-timer-state" class="audience-timer-state">IDLE</div>
+    </div>
+
+    <!-- Buzzer state -->
+    <div id="audience-state"  class="audience-state state-locked-aud">LOCKED</div>
+
+    <!-- Winner banner -->
+    <div id="audience-winner" class="audience-winner hidden"></div>
+
+    <!-- ── Answer timeline ─────────────────────────────────── -->
+    <div class="timeline-section" id="audience-timeline-section" style="display:none">
+      <div class="timeline-section-title">Answer Timeline</div>
+      <div class="timeline-outer">
+        <div class="timeline-events-area" id="audience-timeline-events"></div>
+        <div class="timeline-rail">
+          <div class="timeline-rail-played" id="audience-rail-played" style="width:0%"></div>
+        </div>
+        <div class="timeline-ticks">
+          <span id="audience-tick-start">30s</span>
+          <span>0s</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- audience.js works for both /audience and /embed — the token path segment
+       differs but the URL parsing logic is the same. -->
+  <script src="/js/audience.js"></script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trivia Night — Buzzer</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body class="team-page">
+
+  <!-- Connection banner -->
+  <div id="conn-banner" class="conn-banner disconnected">
+    <span id="conn-text">Connecting…</span>
+  </div>
+
+  <!-- Main team UI -->
+  <div class="team-layout" id="team-layout">
+
+    <!-- Team name header -->
+    <header class="team-header">
+      <div id="team-name" class="team-name-display">Team ?</div>
+    </header>
+
+    <!-- Countdown Quiz Timer Bar (only rendered when format is COUNTDOWN_QUIZ) -->
+    <div class="team-timer-section hidden" id="team-timer-section">
+      <div class="team-timer-row">
+        <div id="team-timer-number" class="team-timer-number">–</div>
+        <div class="team-timer-bar-wrap">
+          <div id="team-timer-fill" class="team-timer-bar-fill"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Status message -->
+    <div id="status-msg" class="team-status-msg">Joining game…</div>
+
+    <!-- The action button -->
+    <div class="buzz-area">
+      <button id="buzz-btn" class="buzz-btn" disabled>BUZZ!</button>
+    </div>
+
+    <!-- Sub-status line -->
+    <div id="sub-status" class="team-sub-status">BUZZER DISABLED</div>
+  </div>
+
+  <script src="/js/team.js"></script>
+</body>
+</html>

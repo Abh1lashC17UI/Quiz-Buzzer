@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trivia Night — Join</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body class="join-page">
+  <div class="join-card">
+    <a href="/" class="back-link">← Back</a>
+    <h1 class="app-title">🎉 Trivia Night</h1>
+    <p class="join-subtitle">Enter the game code your host gave you, then pick your team.</p>
+
+    <div id="join-error" class="error-banner hidden"></div>
+
+    <form id="join-form">
+      <label for="game-code">Game Code</label>
+      <input
+        id="game-code"
+        type="text"
+        maxlength="6"
+        autocomplete="off"
+        autocapitalize="characters"
+        spellcheck="false"
+        placeholder="e.g. K7Q4M2"
+        required
+      />
+
+      <label>Pick Your Team</label>
+      <div class="team-buttons">
+        <button type="button" class="team-pick" data-team="1">Team 1</button>
+        <button type="button" class="team-pick" data-team="2">Team 2</button>
+        <button type="button" class="team-pick" data-team="3">Team 3</button>
+      </div>
+      <input type="hidden" id="selected-team" value="" />
+
+      <button type="submit" id="join-btn" class="primary-btn" disabled>Join Game</button>
+    </form>
+  </div>
+
+  <script>
+    // Pre-fill code if it was saved from a previous session
+    const savedCode = sessionStorage.getItem('trivia_gameCode');
+    if (savedCode) document.getElementById('game-code').value = savedCode;
+
+    // If kicked, show a notice
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('kicked')) {
+      const err = document.getElementById('join-error');
+      err.textContent = 'You were removed from the game by the host.';
+      err.classList.remove('hidden');
+    }
+
+    const teamBtns = document.querySelectorAll('.team-pick');
+    const joinBtn  = document.getElementById('join-btn');
+    const codeInput = document.getElementById('game-code');
+    let selectedTeam = null;
+
+    teamBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        teamBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        selectedTeam = btn.dataset.team;
+        updateJoinBtn();
+      });
+    });
+
+    codeInput.addEventListener('input', () => {
+      codeInput.value = codeInput.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+      updateJoinBtn();
+    });
+
+    function updateJoinBtn() {
+      joinBtn.disabled = !(selectedTeam && codeInput.value.length === 6);
+    }
+
+    document.getElementById('join-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!selectedTeam || codeInput.value.length !== 6) return;
+
+      sessionStorage.setItem('trivia_gameCode',   codeInput.value.trim().toUpperCase());
+      sessionStorage.setItem('trivia_teamNumber',  selectedTeam);
+      sessionStorage.removeItem('trivia_sessionToken');
+
+      window.location.href = '/team';
+    });
+  </script>
+</body>
+</html>
